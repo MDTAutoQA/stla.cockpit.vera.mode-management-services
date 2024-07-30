@@ -1,0 +1,137 @@
+/**
+ * Interface to be implemented by client for receiving
+ * projection session changes
+ * @Project - Client OkIDL Interface for IPC Communication.
+ * @author : Arif Hussain
+ */
+
+
+package com.stellantis.projectionIface.carplay;
+import com.amazon.apmf.IStandard;
+
+
+sealed enum UI_APP_E:u8
+{
+  NONE          = 0,
+  MAP           = 1,
+  TELEPHONE     = 2,
+  MUSIC         = 3,
+  NOWPLAYING    = 4,
+  PHONECALL     = 5,
+}
+
+sealed enum SCREEN_ID_E:u8
+{
+  MAIN                        = 0,
+  CLUSTER_MAP                 = 1,
+  CLUSTER_INSTRUCTION_CARD    = 2,
+}
+
+sealed enum ERROR_ID_E:u8
+{
+  NO_ERR            = 0,
+  NOT_CONNECTED     = 1,
+}
+
+sealed enum PROJECTION_TYPE_E:u8 {
+   DEVIC_NONE = 0,
+   DEVIC_ANDROIDAUTO = 1,
+   DEVIC_CARPLAY = 2,
+}
+
+sealed enum SESSION_RUNNING_STATUS_E:u8 {
+	PROJECTION_MODULE_NONE 						= 0,		///< carplay module none
+	PROJECTION_SESSION_START					= 1,		///< carplay session start
+	PROJECTION_SESSION_END						= 2,		///< carplay session end
+}
+
+sealed enum PROJECTION_TRANSPORT_E:u8 {
+  DEVICE_ProjectionTransport_NONE   = 0,
+  DEVICE_ProjectionTransport_USB	  = 1,
+	DEVICE_ProjectionTransport_WIFI   = 2,
+}
+
+sealed enum SCREEN_TYPE_E:u8 {
+  SCREEN_TYPE_NONE            = 0,
+	SCREEN_TYPE_TEL_ALERT				= 1,
+	SCREEN_TYPE_TEL             = 2,
+	SCREEN_TYPE_SPEECH					= 3,
+	SCREEN_TYPE_NAVI            = 4,
+	SCREEN_TYPE_CAMERA					= 5,
+	SCREEN_TYPE_DISPLAY_OFF     = 6,
+	SCREEN_TYPE_STANDBY					= 7,
+	SCREEN_TYPE_NOTIFICATION_POPUP = 8,
+	SCREEN_TYPE_NOTIFI_INPUT			= 9,
+	SCREEN_TYPE_TAKE_SCREEN				= 10,
+}
+
+sealed enum LASTMODE_E:u8 {
+   LASTMODE_NONE = 0,
+   LASTMODE_PROJECTION = 1,
+   LASTMODE_NATIVE = 2,
+}
+
+sealed enum CP_SCREEN_STREAM_STATE_E:u8 {
+    STREAM_START = 0,
+    STREAM_DATA = 1,
+    STREAM_STOP = 2,
+}
+
+/**
+ * Interface to be implemented by client for receiving
+ * projection session changes,
+ */
+interface IProjectionSessionListener : IStandard {
+   /**
+    * Method that gets called upon projection session change.
+    *
+    * @details The client must define the listener which will be invoked once
+    * the projection session status is changed.
+    *
+    * @param sessionStatus The current projection session status.
+    */
+    void onSessionChange(PROJECTION_TYPE_E projectionType, PROJECTION_TRANSPORT_E projectionTransport, string deviceID, SESSION_RUNNING_STATUS_E sessionStatus);
+}
+
+
+/**
+ * Interface to be implemented by client for receiving
+ * projection frame buffer changes,
+ */
+interface IFrameBufferStatusChangeListener : IStandard {
+
+    void onFrameBufferStatusChange(CP_SCREEN_STREAM_STATE_E screenStream);
+}
+
+
+
+/**
+ * Refers to a subscription for a registered listener with projection.
+ */
+interface ISubscription: IStandard {
+   /**
+    * Removes the subscription.
+    */
+   void remove();
+}
+
+interface ICarPlayClient : IStandard {
+  ERROR_ID_E preparaToShow     (SCREEN_ID_E screen, UI_APP_E app);
+  ERROR_ID_E preparaToHide     (SCREEN_ID_E screen);
+  ERROR_ID_E preparaToBorrow   (SCREEN_ID_E screen);
+  ERROR_ID_E preparaToUnborrow (SCREEN_ID_E screen);
+  ERROR_ID_E startProjectionSession(PROJECTION_TYPE_E projectionType , PROJECTION_TRANSPORT_E projectionTransport, string deviceID, string deepLink, bool firstConnection);
+  ERROR_ID_E stopProjectionSession(string deviceID);
+  ERROR_ID_E showProjection(string deepLink);
+  ERROR_ID_E notifyScreenTransitionType(SCREEN_TYPE_E screenType, bool status);
+  ERROR_ID_E notifyUserScreenTransition(LASTMODE_E lastMode);
+  ISubscription* registerFrameBufferStatusChange(IFrameBufferStatusChangeListener* frameBufferStatusChange);
+  ISubscription* addProjectionSessionListener(IProjectionSessionListener* sessionChange);
+}
+
+
+
+interface ICarPlayClientFactory : IStandard {
+  
+  ICarPlayClient * makeCarPlayClient();
+}

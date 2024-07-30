@@ -1,0 +1,25 @@
+schema-version = 1
+
+[package]
+id = "com.stellantis.service.modemanager"
+version = "228.01.00003"
+title = "Mode Manager Service"
+
+[components]
+[[components.service]]
+id = "com.stellantis.service.modemanager.main"
+library-name = "modemanager-service"
+
+[offers]
+[[offers.service]]
+id = "com.stellantis.service.modemanager.main"
+
+[wants]
+[[wants.service]]
+id = "com.amazon.layout.service.main"
+
+[[wants.service]]
+id = "com.stellantis.carplay.service.main"
+
+[[wants.service]]
+id = "com.stellantis.aap.service.main"

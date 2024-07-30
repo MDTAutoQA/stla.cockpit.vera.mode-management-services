@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2021 Stellantis/MobileDrive and/or their affiliated companies. All rights reserved.
+ *
+ * This software, including documentation, is protected by copyright and controlled by
+ * Stellantis/MobileDrive. All rights are reserved. Copying, including reproducing, storing,
+ * adapting or translating any or all of this material requires the prior written
+ * consent of Stellantis/MobileDrive jointly. This material also contains confidential information,
+ * which may not be disclosed to others without the prior and joint written consent of Stellantis/MobileDrive.
+ *
+ * ****** About File **********
+ * the API that we want to provide from ModeManagerService
+ */
+
+def_version v3;
+
+def_namespace orpheus.service.ModeManagerService;
+
+def_service com.stellantis.service.modemanager.main;
+
+def_enum StateOperation {
+    ALLOWED=0;
+    NOT_ALLOWED=1;
+}
+
+def_interface ModeManagerService {
+    def_function int32_t :async requestModeUpdate(string_t :in componentId, string_t :in path) { }
+
+    def_function int32_t :async requestTransientModeUpdate(string_t :in componentId) { }
+
+    def_function int32_t :callback_repeat stateCallback(StateOperation :in:ref state, string_t :in:ref error, void :in:ref result_ctx) { }
+
+    def_alias stateCallback stateCallback_t;
+
+    def_function int32_t :async stateSubscribe(stateCallback_t :cb_repeat<ctx> callback) { }
+
+    def_function int32_t :sync stateUnsubscribe() {}
+
+    def_function int32_t :async setPendingRequest(string_t :in componentId) { }
+
+    def_function int32_t :callback_repeat backStackCallback(string_t :in:ref componentId, string_t :in:ref path, string_t :in:ref error, void :in:ref result_ctx) { }
+
+    def_alias backStackCallback backStackCallback_t;
+
+    def_function int32_t :async backStackSubscribe(backStackCallback_t :cb_repeat<ctx> callback) { }
+
+    def_function int32_t :sync backStackUnsubscribe() {}
+
+    def_function int32_t :async popBackStack() { }
+
+    def_function int32_t :callback launchParamCallback(string_t :in:ref componentId, string_t :in:ref launchParams, string_t :in:ref requestUuid, string_t :in:ref error, void :in:ref result_ctx) { }
+
+    def_alias launchParamCallback launchParamCallback_t;
+
+    def_function int32_t :async iRequestLaunchParams(string_t :in:ref componentId, string_t :in:ref requestUuid, launchParamCallback_t :cb<result_ctx> callback) { }
+}

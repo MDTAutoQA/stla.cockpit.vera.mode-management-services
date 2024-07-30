@@ -1,0 +1,36 @@
+{
+    "target_yocto_layer":"spx13/stla.cockpit.yocto.meta-stla",
+    "line":"b4",
+    "build_flavor":"kepler_mw",
+    "recipe_path":"",
+    "docker_image":"stla-cockpit-apps-kepler-prod:v2.4.1",
+    "unit_test_list":[
+        "\"parasoft\""
+    ],
+    "static_analysis_list":[
+        "\"parasoft-linux\""
+    ],
+    "static_analysis_project_name":"stla.cockpit.vera.mode-management-services",
+    "cybersecurity_analysis_list":"fortify",
+    "target_yocto_sdk":"R2_PREMIUM_GLOBAL_STLAB_B4_0018_DEV_3s_SDK",
+    "host_yocto_sdk":"X86_64SDK",
+    "extra_cmake_params":"-DKEPLER_ARCH_ABI=aarch64 -DCMAKE_TOOLCHAIN_FILE=KEPLER_SDK_PATH/kndk/build-utils/cmake/KeplerToolchain.cmake -DCMAKE_INSTALL_PREFIX=KEPLER_SDK_PATH/kndk/toolchains/aarch64/usr/ -DLIB= -DINC= -DCMAKE_BUILD_TYPE=debug -DENABLE_SCA=1",
+    "extra_cmake_paramsX86":"-DKEPLER_ARCH_ABI=x86_64 -DCMAKE_TOOLCHAIN_FILE=KEPLER_SDK_PATH/kndk/build-utils/cmake/KeplerToolchain.cmake -DCMAKE_INSTALL_PREFIX=KEPLER_SDK_PATH/kndk/toolchains/x86_64/usr/ -DENABLE_UNITTEST=1 -DCPPTEST_PROJECT=ON",
+    "disable_parasoftinstrumention_files":["plumbing.cpp"],
+    "disable_sca_files":["-exclude **/build/common/** -exclude **/build/gen/** -exclude **/build/_apmf_idl_pkg/** -exclude **/ipcf4-core_include/** -exclude **/ipcf4-core_src/** -exclude **/private/ipcf/**"],
+    "build_artifacts":["ModeManagerService_aarch64.vpkg"],
+    "buildscript_variables":[
+        {
+            "SCA_RULESET":"user/cpp-coding-rules-v1.0.1.properties"
+        },
+        {
+            "UT_RULESET":"user/ParasoftCustomSysRoot.properties"
+        },
+        {
+            "KEPLER_VERSION":"qdk-9.3"
+        },
+        {
+            "KEPLER_SDK_VERSION":"0.2.18865.0"
+        }
+    ]
+}

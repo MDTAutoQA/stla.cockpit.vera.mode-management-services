@@ -1,0 +1,33 @@
+#Exported settings
+#Fri Sep 29 10:53:26 CEST 2023
+parasoft.eula.accepted=true
+build.id=${dtp_project}-${time}
+console.verbosity.level=high
+cpptest.license.network.edition=automation_compliance_edition
+cpptest.license.use_network=true
+dtp.enabled=true
+dtp.password=stellantis
+dtp.project=Default Project
+dtp.url=https://ahdwp001.servers.chrysler.com:8443
+dtp.user=Test_user1
+# license.network.auth.enabled=false
+# license.network.use.specified.server=false
+report.active_rules=true
+report.archive=false
+report.associations=true
+report.authors_details=true
+report.contexts_details=true
+report.custom.extension=html
+report.developer_errors=true
+report.developer_reports=true
+report.failed_tests_only=false
+report.format=html_ut_details
+report.generate_htmls=true
+report.location_details=true
+report.metrics_details=true
+report.setup.problems=bottom
+report.suppressed_msgs=true
+report.tcdetails=true
+report.test_params=true
+report.test_suites_only=true
+session.tag=${config_name}
